@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Icon, Label, Menu, Table } from "semantic-ui-react";
 import ProductService from "../services/productService";
+import { Link } from "react-router-dom";
 
 export default function ProductList() {
   //lifecycle hook
+  //UseEffect için sonuna bir boş dizi döndürmemiz gerekiyor.
+  //Sebebi sonsuz bir şekilde istek göndermemesini istiyoruz
+
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    let productService = new ProductService()
-    productService.getProduct().
-    then(result=>setProducts(result.data.data))
-  })
-  
+    let productService = new ProductService();
+    productService.getProduct().then((result) => setProducts(result.data.data));
+   
+  }, []);
 
   return (
     <div>
@@ -20,15 +23,15 @@ export default function ProductList() {
           <Table.Row>
             <Table.HeaderCell>Ürün adı</Table.HeaderCell>
             <Table.HeaderCell>Birim fiyatı</Table.HeaderCell>
-            <Table.HeaderCell>Stok adedi</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
 
         <Table.Body>
           {products.map((product) => (
             <Table.Row>
-              <Table.Cell>{product.productName}</Table.Cell>
-              <Table.Cell>{product.unitsInStock}</Table.Cell>
+              <Table.Cell>
+                <Link to={`/products/${product.productId}`}>{product.productName}</Link>
+              </Table.Cell>
               <Table.Cell>{product.unitPrice}</Table.Cell>
             </Table.Row>
           ))}
