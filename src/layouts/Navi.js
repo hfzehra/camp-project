@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import CartSummary from "./CartSummary";
-import { Button, Menu, Container } from "semantic-ui-react";
+import {  Menu, Container } from "semantic-ui-react";
 import SignOut from "./SignOut";
 import SingIn from "./SingIn";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 //inverted -> normal boyut demek
 //fixed -> sabitleme
@@ -11,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 //
 export default function Navi() {
   //Default false -> giriş yapmammış henüz (destructred)
+  const { cartItems } = useSelector((state) => state.cart);
   const [isAuthenticated, setIsAuthenticated] = useState(true);
   const history = useNavigate()
   //Çıkış yapma işlemini handle yapıyoruz.
@@ -30,7 +32,8 @@ export default function Navi() {
           <Menu.Item name="messages" />
 
           <Menu.Menu position="right">
-            <CartSummary />
+            {/* sepetde hiçbir şey yoksa sepeti gösterme  */}
+            {cartItems.length>0 && <CartSummary />}
             {isAuthenticated ? <SingIn signOut={handleSignOut} /> : <SignOut signIn={handleSignIn} />}
           </Menu.Menu>
           {/* Çıkış yaptığımda ana sayfa göstersin istiyorum. Bu yüzden useHistory kullanacağız */}

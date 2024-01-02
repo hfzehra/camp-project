@@ -5,6 +5,7 @@ import { Grid } from "semantic-ui-react";
 import { Route, Routes } from "react-router-dom";
 import ProductDetail from "../pages/ProductDetail";
 import CartDetail from "../pages/CartDetail";
+import { ToastContainer } from "react-toastify";
 
 //Layout aslında sabit olan kısımlardır
 //.js ve .jsx arasında fark yok ikiside kullanılabilir.
@@ -12,6 +13,7 @@ import CartDetail from "../pages/CartDetail";
 export default function Dashboard() {
   return (
     <div>
+      <ToastContainer position="bottom-right"/>
       <Grid>
         <Grid.Column width={4}>
           <Categories />

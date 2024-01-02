@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Icon, Label, Menu, Table } from "semantic-ui-react";
+import { Button, Icon,  Menu, Table } from "semantic-ui-react";
 import ProductService from "../services/productService";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../store/actions/cartActions";
+import { toast } from "react-toastify";
 
 export default function ProductList() {
   //lifecycle hook
   //UseEffect için sonuna bir boş dizi döndürmemiz gerekiyor.
   //Sebebi sonsuz bir şekilde istek göndermemesini istiyoruz
+
+  //bir aksiyon çağırmak için kullanılır
+  const dispatch = useDispatch()
 
   const [products, setProducts] = useState([]);
 
@@ -16,6 +22,10 @@ export default function ProductList() {
    
   }, []);
 
+  const handleAddToCart = (product) =>{
+    dispatch(addToCart())
+    toast.success(`${product.productName} sepete eklendi`)
+  }
   return (
     <div>
       <Table celled>
@@ -23,6 +33,7 @@ export default function ProductList() {
           <Table.Row>
             <Table.HeaderCell>Ürün adı</Table.HeaderCell>
             <Table.HeaderCell>Birim fiyatı</Table.HeaderCell>
+            <Table.HeaderCell></Table.HeaderCell>
           </Table.Row>
         </Table.Header>
 
@@ -33,6 +44,7 @@ export default function ProductList() {
                 <Link to={`/products/${product.productId}`}>{product.productName}</Link>
               </Table.Cell>
               <Table.Cell>{product.unitPrice}</Table.Cell>
+              <Table.Cell><Button onClick={() => handleAddToCart(product)}>Sepete ekle</Button></Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
